@@ -1,0 +1,68 @@
+# The name of our workflow
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Release Leon-module
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 12
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v3.0.4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Grant Permission for Gradlew to Execute
+        run: chmod +x gradlew
+
+      - name: Build AAR ⚙️🛠
+        run: bash ./gradlew :leon-utilities:assemble
+
+#      - name: Publish to GitHub Package Registry 🚀
+#        run: bash ./gradlew :leon-utilities:publish
+#        env:
+#          GPR_USER: ${{ github.actor }}
+#          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release ✅
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
+      - name: Upload Leon-module Library AAR 🗳
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: leon-utilities/build/outputs/aar/leon-utilities-release.aar
+          asset_name: leon-utilities-module-${{ steps.get_version.outputs.VERSION }}-release.aar
+          asset_content_type: application/aar
