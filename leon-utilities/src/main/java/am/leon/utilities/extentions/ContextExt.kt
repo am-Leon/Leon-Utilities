@@ -56,12 +56,6 @@ fun Context.getFullAddress(latitude: Double, longitude: Double): String {
     val knownName: String? =
         addresses[0].featureName // Only if available else return NULL
 
-    ("getAddress:  address $address").toLog()
-    ("getAddress:  city $city").toLog()
-    ("getAddress:  state $state").toLog()
-    ("getAddress:  postalCode $postalCode").toLog()
-    ("getAddress:  knownName $knownName").toLog()
-
     return if (address != null) {
         if (knownName != null)
             "$country-$city-$state-$address-$knownName"

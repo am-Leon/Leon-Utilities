@@ -1,9 +1,7 @@
 package am.leon.utilities.extentions
 
-import am.leon.utilities.BuildConfig
 import android.os.Build
 import android.text.Html
-import android.util.Log
 
 
 @Suppress("DEPRECATION")
@@ -33,11 +31,6 @@ fun String.removeNumber(): String {
     if (str.isNotEmpty())
         str = str.substring(0, str.length - 1)
     return str
-}
-
-fun String?.toLog(tag: String = BuildConfig.LIBRARY_PACKAGE_NAME) {
-    if (BuildConfig.DEBUG)
-        Log.e(tag, ">> $this")
 }
 
 fun String.arabicNumbersToEn(): String {

@@ -8,10 +8,10 @@ plugins {
 ext {
     mGroupId = "am-leom"
     mArtifactId = "utilities"
-    mVersionCode = 1
-    mVersionName = "v0.1.0"
+    mVersionCode = 2
+    mVersionName = "v0.1.1"
 
-    mLibraryName = "Leon-Utilities-module"
+    mLibraryName = "Leon-Utilities"
     mLibraryDescription = "$mLibraryName Contains Utilities classses."
 }
 
@@ -67,9 +67,6 @@ dependencies {
 
     // Google Maps
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
-
-    // am-Leon
-    implementation 'com.github.am-Leon:DateUtils:1.0.8-beta'                // DateUtils
 }
 
 afterEvaluate {
