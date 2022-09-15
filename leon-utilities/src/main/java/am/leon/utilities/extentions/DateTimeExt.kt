@@ -21,41 +21,56 @@ fun Context.getFormattedDuration(time: Int): String {
     return getString(R.string.time_format, hour, min)
 }
 
-fun Context.launchDayPicker(listener: OnDateSetListener) {
+enum class DatePickerType { GENERAL, BEFORE_TODAY, AFTER_TODAY }
+
+fun Context.launchDayPicker(pickerType: DatePickerType, listener: OnDateSetListener) {
     // Get calendar instance
     val calendar = Calendar.getInstance()
 
     // Get current time
-    val currentYear = calendar.get(Calendar.YEAR)
-    val currentMonth = calendar.get(Calendar.MONTH)
-    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    val calenderYear = calendar.get(Calendar.YEAR)
+    val calenderMonth = calendar.get(Calendar.MONTH)
+    val calenderDay = calendar.get(Calendar.DAY_OF_MONTH)
 
-    // Move day as first day of the month
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
+    val datePickerDialog: DatePickerDialog
+    when (pickerType) {
+        DatePickerType.GENERAL -> datePickerDialog = DatePickerDialog(
+            this, listener, calenderYear, calenderMonth, calenderDay
+        )
 
-    // Min = time after changes
-    val minTime = System.currentTimeMillis() - 1000 // disable before today
+        DatePickerType.BEFORE_TODAY -> datePickerDialog = DatePickerDialog(
+            this, listener, calenderYear, calenderMonth, calenderDay
+        ).apply {
+            datePicker.maxDate = System.currentTimeMillis() - (24 * 60 * 60 * 1000)
+        }
 
-    // Move day as first day of the month
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
-    // Move to next month default is 1
-    calendar.add(Calendar.MONTH, 5)
-    // Go back one day (so last day of current month)
-    calendar.add(Calendar.DAY_OF_MONTH, -1)
+        DatePickerType.AFTER_TODAY -> {
+            // Move day as first day of the month
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
 
-    // Max = current
-    val maxTime = calendar.timeInMillis
+            // Min = time after changes
+            val minTime = System.currentTimeMillis() - 1000 // disable before today
 
-    // Create dialog
-    val datePickerDialog = DatePickerDialog(
-        this, listener, currentYear, currentMonth, currentDay
-    ).apply {
-        // Set dates
-        datePicker.maxDate = maxTime
-        datePicker.minDate = minTime
+            // Move day as first day of the month
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
+            // Move to next month default is 1
+            calendar.add(Calendar.MONTH, 5)
+            // Go back one day (so last day of current month)
+            calendar.add(Calendar.DAY_OF_MONTH, -1)
+
+            // Max = current
+            val maxTime = calendar.timeInMillis
+
+            // Create dialog
+            datePickerDialog = DatePickerDialog(
+                this, listener, calenderYear, calenderMonth, calenderDay
+            ).apply {
+                // Set dates
+                datePicker.maxDate = maxTime
+                datePicker.minDate = minTime
+            }
+        }
     }
-
-    // Show dialog
     datePickerDialog.show()
 }
 
