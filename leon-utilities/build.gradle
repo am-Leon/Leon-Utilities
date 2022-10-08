@@ -15,12 +15,6 @@ ext {
     mLibraryDescription = "$mLibraryName Contains Utilities classses."
 }
 
-def getProps(path) {
-    Properties props = new Properties()
-    props.load(new FileInputStream(rootProject.file(path)))
-    return props
-}
-
 android {
     compileSdk 33
     namespace 'am.leon.utilities'
@@ -97,11 +91,6 @@ afterEvaluate {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/am-Leon/Leon-Utilities")
-//                credentials {
-//                    def githubProp = getProps("$rootDir/github.properties")
-//                    username = githubProp['GPR_USER']
-//                    password = githubProp['GPR_KEY']
-//                }
             }
         }
     }
