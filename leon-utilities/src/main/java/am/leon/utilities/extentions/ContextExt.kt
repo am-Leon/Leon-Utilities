@@ -1,16 +1,25 @@
 package am.leon.utilities.extentions
 
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.TIRAMISU
 import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import java.util.*
 
-fun Context.getApplicationVersionName(): String =
-    this.packageManager.getPackageInfo(this.packageName, 0).versionName
+@Suppress("DEPRECATION")
+fun Context.getPackageInfo(packageName: String): PackageInfo = if (SDK_INT >= TIRAMISU)
+    packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))
+else
+    packageManager.getPackageInfo(packageName, 0)
+
+fun Context.getApplicationVersionName(): String = getPackageInfo(packageName).versionName
 
 fun Context.showToastAsShort(message: String) =
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -36,35 +45,32 @@ fun Context.getColorFromRes(colorRes: Int): Int = ContextCompat.getColor(this, c
 fun Context.getDrawableFromRes(drawableRes: Int): Drawable =
     ContextCompat.getDrawable(this, drawableRes)!!
 
+@Suppress("DEPRECATION")
 fun Context.getFullAddress(latitude: Double, longitude: Double): String {
     val geocoder = Geocoder(this, Locale.getDefault())
-    val addresses: List<Address> = geocoder.getFromLocation(
-        latitude, longitude, 1
-    ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+    var fullAddress = StringBuilder("")
 
-    if (addresses.isEmpty())
-        return ""
+    if (SDK_INT >= TIRAMISU) geocoder.getFromLocation(latitude, longitude, 1) {
+        if (it.isEmpty()) return@getFromLocation
 
-    var address: String? = null
-    if (addresses[0].maxAddressLineIndex > 0)
-        address =
-            addresses[0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-    val city: String? = addresses[0].locality
-    val state: String? = addresses[0].adminArea
-    val country: String? = addresses[0].countryName
-    val postalCode: String? = addresses[0].postalCode
-    val knownName: String? =
-        addresses[0].featureName // Only if available else return NULL
-
-    return if (address != null) {
-        if (knownName != null)
-            "$country-$city-$state-$address-$knownName"
-        else
-            "$country-$city-$state-$address"
-    } else {
-        if (knownName != null)
-            "$country-$city-$state-$knownName"
-        else
-            "$country-$city-$state"
+        it[0].extractAddressAsString()
     }
+    else geocoder.getFromLocation(latitude, longitude, 1)?.apply {
+        if (isEmpty()) return@apply
+
+        fullAddress = get(0).extractAddressAsString()
+    }
+    return fullAddress.toString()
+}
+
+private fun Address.extractAddressAsString(): StringBuilder {
+    val builder = StringBuilder()
+    builder.append(countryName).append("-").append(locality).append("-").append(adminArea)
+        .append("-")
+
+    if (maxAddressLineIndex > 0) builder.append(getAddressLine(0)).append("-")
+
+    if (featureName != null) builder.append(featureName).append("-")
+
+    return builder
 }

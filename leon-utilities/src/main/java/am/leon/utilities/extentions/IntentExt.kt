@@ -1,14 +1,12 @@
 package am.leon.utilities.extentions
 
 import am.leon.utilities.R
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
 
 
 fun Context.whatsAppIntent(phoneWithCountryCode: String) {
@@ -18,11 +16,7 @@ fun Context.whatsAppIntent(phoneWithCountryCode: String) {
         i.data = Uri.parse(url)
         startActivity(i)
     } catch (e: PackageManager.NameNotFoundException) {
-        Snackbar.make(
-            (this as Activity).findViewById(android.R.id.content),
-            getString(R.string.whatsapp_not_installed),
-            Snackbar.LENGTH_SHORT
-        ).show()
+        showToastAsShort(getString(R.string.whatsapp_not_installed))
         e.printStackTrace()
     }
 }
@@ -42,7 +36,7 @@ fun Context.instagramIntent(profileName: String) {
 fun Context.twitterIntent(profileName: String) {
     var intent: Intent?
     try {
-        packageManager.getPackageInfo("com.twitter.android", 0)
+        getPackageInfo("com.twitter.android")
         intent = Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=$profileName"))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     } catch (e: java.lang.Exception) {
