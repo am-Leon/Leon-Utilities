@@ -97,11 +97,11 @@ afterEvaluate {
             maven {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/am-Leon/Leon-Utilities")
-                credentials {
-                    def githubProp = getProps("$rootDir/github.properties")
-                    username = githubProp['GPR_USER']
-                    password = githubProp['GPR_KEY']
-                }
+//                credentials {
+//                    def githubProp = getProps("$rootDir/github.properties")
+//                    username = githubProp['GPR_USER']
+//                    password = githubProp['GPR_KEY']
+//                }
             }
         }
     }

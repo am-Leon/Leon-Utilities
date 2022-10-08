@@ -40,7 +40,7 @@ jobs:
         run: bash ./gradlew :leon-utilities:publish
         env:
           GPR_USER: ${{ github.actor }}
-          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+          GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
 
       - name: Create Release ✅
         id: create_release
