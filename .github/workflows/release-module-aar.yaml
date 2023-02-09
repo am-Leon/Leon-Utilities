@@ -27,5 +27,5 @@ jobs:
 #          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
 
   workflow-publish:
-    needs: [ workflow-test-unit ]
+    needs: [ workflow-lint ]
     uses: ./.github/workflows/runner-module-publish-aar.yaml
