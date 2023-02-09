@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="GradientTextView">
-        <attr name="isVertical" format="boolean" />
-        <attr name="startColor" format="color" />
-        <attr name="endColor" format="color" />
+        <attr name="leon_isVertical" format="boolean" />
+        <attr name="leon_startColor" format="color" />
+        <attr name="leon_endColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="TextInputEditTextIconColorChangeable">
+        <attr name="leon_focused" format="color" />
+        <attr name="leon_inactive" format="color" />
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,26 @@
+name: Run Android Lint
+on:
+  workflow_call:
+
+env:
+  MODULE_NAME: :leon-utilities
+
+jobs:
+  lint:
+    name: Run Android Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Run Lint
+        run: ./gradlew $MODULE_NAME:lint
+
+      - name: Upload html test report
+        # Upload report to ubuntu server to be used on another action...
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: lint_report
+          # module path.....
+          path: '**/build/reports/lint-results-*'

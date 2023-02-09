@@ -1,0 +1,26 @@
+name: Run Unit-test
+on:
+  workflow_call:
+
+env:
+  MODULE_NAME: :leon-utilities
+
+jobs:
+  unit-test:
+    name: Run Unit test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: ./gradlew $MODULE_NAME:testDebugUnitTest
+
+      - name: Upload unit test report
+        # Upload report to ubuntu server to be used on another action...
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit_test_report
+          # module path.....
+          path: '**/build/reports/tests/testDebugUnitTest/'
