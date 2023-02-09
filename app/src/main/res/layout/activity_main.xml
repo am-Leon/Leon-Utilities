@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <am.leon.utilities.editText.TextInputEditTextIconColorChangeable
+        <am.leon.utilities.android.helpers.components.editText.TextInputEditTextIconColorChangeable
             android:id="@+id/input_password"
             style="@style/EditText"
             android:drawableStart="@drawable/ic_baseline_cancel_24" />
@@ -22,7 +22,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <am.leon.utilities.editText.TextInputEditTextIconColorChangeable
+    <am.leon.utilities.android.helpers.components.editText.TextInputEditTextIconColorChangeable
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="66dp"
