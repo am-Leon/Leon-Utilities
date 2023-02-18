@@ -1,11 +1,12 @@
 package am.leon.utilities.android.extentions
 
 import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -19,20 +20,50 @@ import java.lang.reflect.Type
 val FragmentManager.currentNavigationFragments: MutableList<Fragment>?
     get() = primaryNavigationFragment?.childFragmentManager?.fragments
 
+fun Fragment.replaceFragment(containerId: Int, fragment: Fragment) {
+    requireActivity().supportFragmentManager.commit {
+        replace(containerId, fragment)
+    }
+}
 
-// TODO: causes Memory Leak...
+fun <T : ComponentActivity> Fragment.navToActivity(
+    activity: Class<T>, args: Bundle? = null, clearAllStack: Boolean = false
+) {
+    requireActivity().navToActivity(activity, args, clearAllStack)
+}
+
+fun Activity.navToActivity(
+    destinationActivity: Class<out ComponentActivity>, bundle: Bundle? = null,
+    clearAllStack: Boolean = false
+) {
+    val intent = Intent(this, destinationActivity)
+    bundle?.let { intent.putExtras(it) }
+    startActivity(intent)
+    if (clearAllStack) finishAffinity()
+}
+
+inline fun <reified T : ComponentActivity> Fragment.castToActivity(callback: (T?) -> Unit): T? {
+    return if (requireActivity() is T) {
+        callback(requireActivity() as T)
+        requireActivity() as T
+    } else {
+        callback(null)
+        null
+    }
+}
 
 /*This called when method onBackClick in activity is called */
 fun Fragment.onBackClicked(callback: () -> Unit) {
-    requireActivity().onBackClicked(callback)
+    requireActivity().onBackClicked(this, callback)
 }
 
-fun ComponentActivity.onBackClicked(callback: () -> Unit) {
-    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+fun ComponentActivity.onBackClicked(fragment: Fragment? = null, callback: () -> Unit) {
+    val onBackCallback = object : OnBackPressedCallback(fragment?.isDetached?.not() ?: true) {
         override fun handleOnBackPressed() {
             callback.invoke()
         }
-    })
+    }
+    onBackPressedDispatcher.addCallback(this, onBackCallback)
 }
 
 
@@ -63,20 +94,4 @@ fun <B : ViewBinding> LifecycleOwner.bindView(container: ViewGroup? = null): B {
 private fun <T : Any> Any.getTClass(): Class<T> {
     val type: Type = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
     return type as Class<T>
-}
-
-inline fun <reified T : AppCompatActivity> Fragment.castToActivity(callback: (T?) -> Unit): T? {
-    return if (requireActivity() is T) {
-        callback(requireActivity() as T)
-        requireActivity() as T
-    } else {
-        callback(null)
-        null
-    }
-}
-
-fun Fragment.replaceFragment(containerId: Int, fragment: Fragment) {
-    activity?.supportFragmentManager?.commit {
-        replace(containerId, fragment)
-    }
 }

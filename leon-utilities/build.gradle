@@ -8,8 +8,8 @@ plugins {
 ext {
     mGroupId = "am-leom"
     mArtifactId = "utilities"
-    mVersionCode = 6
-    mVersionName = "v1.0.1"
+    mVersionCode = 7
+    mVersionName = "v1.0.2"
 
     mLibraryName = "Leon-Utilities"
     mLibraryDescription = "$mLibraryName Contains Utilities classses."
@@ -46,7 +46,7 @@ android {
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
             // Output name
-            outputFileName = "Leon-utilities-${mVersionName}-release.aar"
+            outputFileName = "leon-utilities-${mVersionName}-release.aar"
         }
     }
 //    publishing {
