@@ -6,23 +6,31 @@ import android.util.Log
 class LogcatWriter(private val appName: String, override val isDebugEnabled: Boolean) : LogWriter {
 
     override fun debug(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-        Log.d(appName, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.d(appName, formattedMessage)
+        }
     }
 
     override fun info(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-        Log.i(appName, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.i(appName, formattedMessage)
+        }
     }
 
     override fun warning(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-        Log.w(appName, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.w(appName, formattedMessage)
+        }
     }
 
     override fun error(clazz: Class<*>, message: String?, throwable: Throwable?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-        Log.e(appName, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message, throwable)
+            Log.e(appName, formattedMessage)
+        }
     }
 
     private fun getFormattedMessage(
