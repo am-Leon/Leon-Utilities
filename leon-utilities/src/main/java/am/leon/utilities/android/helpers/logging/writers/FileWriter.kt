@@ -12,30 +12,35 @@ class FileWriter(
 ) : LogWriter {
 
     override fun debug(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-        Log.d(appName, formattedMessage)
-        FileUtil.logToFile(LogType.DEBUG, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.d(appName, formattedMessage)
+            FileUtil.logToFile(LogType.DEBUG, formattedMessage)
+        }
     }
 
     override fun info(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-
-        Log.i(appName, formattedMessage)
-        FileUtil.logToFile(LogType.INFO, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.i(appName, formattedMessage)
+            FileUtil.logToFile(LogType.INFO, formattedMessage)
+        }
     }
 
     override fun warning(clazz: Class<*>, message: String?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-
-        Log.w(appName, formattedMessage)
-        FileUtil.logToFile(LogType.WARNING, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message)
+            Log.w(appName, formattedMessage)
+            FileUtil.logToFile(LogType.WARNING, formattedMessage)
+        }
     }
 
     override fun error(clazz: Class<*>, message: String?, throwable: Throwable?) {
-        val formattedMessage = getFormattedMessage(clazz, message)
-
-        Log.e(appName, formattedMessage)
-        FileUtil.logToFile(LogType.ERROR, formattedMessage)
+        if (isDebugEnabled) {
+            val formattedMessage = getFormattedMessage(clazz, message, throwable)
+            Log.e(appName, formattedMessage)
+            FileUtil.logToFile(LogType.ERROR, formattedMessage)
+        }
     }
 
     private fun getFormattedMessage(
@@ -48,7 +53,9 @@ class FileWriter(
     }
 
     init {
-        val logFile: File = FileUtil.checkPermissionsAndCreateFile(folderName, fileName)
-        FileUtil.createLogWriter(logFile)
+        if (isDebugEnabled) {
+            val logFile: File = FileUtil.checkPermissionsAndCreateFile(folderName, fileName)
+            FileUtil.createLogWriter(logFile)
+        }
     }
 }
