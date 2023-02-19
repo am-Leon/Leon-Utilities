@@ -1,4 +1,4 @@
-package am.leon.utilities.android.logging
+package am.leon.utilities.android.helpers.logging
 
 class Logger(private val clazz: Class<*>) {
     /**
@@ -14,6 +14,14 @@ class Logger(private val clazz: Class<*>) {
         LoggerFactory.currentLogWriter.debug(clazz, message)
     }
 
+    fun info(message: String?) {
+        LoggerFactory.currentLogWriter.info(clazz, message)
+    }
+
+    fun warning(message: String?) {
+        LoggerFactory.currentLogWriter.warning(clazz, message)
+    }
+
     /**
      * Log an exception (throwable) at the ERROR level with an
      * accompanying message.
@@ -23,9 +31,5 @@ class Logger(private val clazz: Class<*>) {
      */
     fun error(message: String?, throwable: Throwable? = null) {
         LoggerFactory.currentLogWriter.error(clazz, message, throwable)
-    }
-
-    fun info(message: String?) {
-        LoggerFactory.currentLogWriter.info(clazz, message)
     }
 }
