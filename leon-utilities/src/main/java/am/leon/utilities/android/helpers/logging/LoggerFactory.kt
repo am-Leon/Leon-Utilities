@@ -1,6 +1,6 @@
-package am.leon.utilities.android.logging
+package am.leon.utilities.android.helpers.logging
 
-import am.leon.utilities.android.logging.writers.DummyWriter
+import am.leon.utilities.android.helpers.logging.writers.DummyWriter
 
 object LoggerFactory {
     var currentLogWriter: LogWriter = DummyWriter()
