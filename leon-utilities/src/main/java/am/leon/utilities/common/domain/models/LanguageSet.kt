@@ -3,9 +3,9 @@ package am.leon.utilities.common.domain.models
 import am.leon.utilities.R
 import androidx.annotation.StringRes
 
-enum class LanguageSet(val prefix: String, @StringRes val resName: Int) {
-    ARABIC("ar", R.string.arabic),
-    ENGLISH("en", R.string.english);
+enum class LanguageSet(val id: Int, val prefix: String, @StringRes val resName: Int) {
+    ARABIC(1001, "ar", R.string.arabic),
+    ENGLISH(1002, "en", R.string.english);
 
     companion object {
         fun find(prefix: String): LanguageSet {
@@ -19,6 +19,14 @@ enum class LanguageSet(val prefix: String, @StringRes val resName: Int) {
         fun findByResName(resName: Int): LanguageSet {
             for (i in 0 until values().size) {
                 if (values()[i].resName == resName)
+                    return values()[i]
+            }
+            return ENGLISH
+        }
+
+        fun findByID(id: Int): LanguageSet {
+            for (i in 0 until values().size) {
+                if (values()[i].id == id)
                     return values()[i]
             }
             return ENGLISH
