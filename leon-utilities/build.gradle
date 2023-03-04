@@ -8,8 +8,8 @@ plugins {
 ext {
     mGroupId = "am-leom"
     mArtifactId = "utilities"
-    mVersionCode = 10
-    mVersionName = "v1.1.2"
+    mVersionCode = 11
+    mVersionName = "v1.1.3"
 
     mLibraryName = "Leon-Utilities"
     mLibraryDescription = "$mLibraryName Contains Utilities classses."
