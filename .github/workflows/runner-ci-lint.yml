@@ -1,9 +1,12 @@
 name: Run Android Lint
+
 on:
   workflow_call:
-
-env:
-  MODULE_NAME: :leon-utilities
+    inputs:
+      MODULE_NAME:
+        description: 'Which module you need to run this flow on...'
+        type: string
+        required: true
 
 jobs:
   lint:
@@ -13,8 +16,14 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
       - name: Run Lint
-        run: ./gradlew $MODULE_NAME:lint
+        run: ./gradlew ${{ inputs.MODULE_NAME }}:lint
 
       - name: Upload html test report
         # Upload report to ubuntu server to be used on another action...
@@ -22,5 +31,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: lint_report
-          # module path.....
-          path: '**/build/reports/lint-results-*'
+          path: ${{ inputs.MODULE_NAME }}/build/reports/lint-results-*
