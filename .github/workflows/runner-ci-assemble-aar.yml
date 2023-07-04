@@ -1,0 +1,36 @@
+name: Publish AAR Module
+on:
+  workflow_call:
+    inputs:
+      MODULE_NAME:
+        description: 'Which module you need to run this flow on...'
+        type: string
+        required: true
+
+jobs:
+  assemble:
+    name: Assemble Android Module AAR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: Grant Permission for Gradlew to Execute
+        run: chmod +x ./gradlew
+
+      - name: Build AAR ⚙️🛠
+        run: ./gradlew ${{ inputs.MODULE_NAME }}:assembleRelease
+
+      - name: Upload Assemble Module AAR
+        # Upload report to ubuntu server to be used on another action...
+        uses: actions/upload-artifact@v3
+        with:
+          name: assemble_module
+          path: ${{ inputs.MODULE_NAME }}/build/outputs/aar/**-release.aar
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
