@@ -1,4 +1,4 @@
-package am.leon.utilities.extentions
+package am.leon.utilities.android.extentions
 
 import com.google.gson.Gson
 import org.json.JSONArray
