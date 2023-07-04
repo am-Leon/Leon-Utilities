@@ -1,0 +1,24 @@
+name: leon-utilities module Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  workflow-lint:
+    uses: ./.github/workflows/runner-ci-lint.yml
+    with:
+      MODULE_NAME: 'leon-utilities'
+
+  workflow-assemble-aar:
+    needs: [ workflow-lint ]
+    uses: ./.github/workflows/runner-ci-assemble-aar.yml
+    with:
+      MODULE_NAME: 'leon-utilities'
+
+  workflow-git_release_upload_files:
+    needs: [ workflow-assemble-aar ]
+    uses: ./.github/workflows/runner-cd-git-release-module.yml
+    with:
+      UPLOADED_FILES_ID: 'assemble_module'
