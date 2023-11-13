@@ -1,4 +1,4 @@
-package am.leon.utilities.android.utils.file
+package am.leon.utilities.android.helpers.logging.file
 
 import android.os.Environment
 import android.util.Log

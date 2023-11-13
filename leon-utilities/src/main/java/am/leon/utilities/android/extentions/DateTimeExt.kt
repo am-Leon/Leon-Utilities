@@ -1,13 +1,15 @@
 package am.leon.utilities.android.extentions
 
-import am.leon.utilities.R
 import am.leon.utilities.android.helpers.components.datePicker.OnDateSetListener
 import am.leon.utilities.android.helpers.components.timePicker.OnTimeSetListener
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 
 fun Date.getCurrentDateTimeUTC(pattern: String): String {
@@ -28,10 +30,16 @@ fun Date.getDeviceCurrentDateTimeFormatted(pattern: String): String {
     return format.format(this)
 }
 
-fun Context.getFormattedDuration(time: Int): String {
-    val hour = time / 60
-    val min = time % 60
-    return getString(R.string.time_format, hour, min)
+fun Long.getRemainingTime(): String {
+    val hours: Int = ((this / 1000) / 3600).toInt()
+    val minutes: Int = (((this / 1000) % 3600) / 60).toInt()
+    val seconds: Int = ((this / 1000) % 60).toInt()
+
+    return if (hours > 0) {
+        String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds)
+    } else {
+        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+    }
 }
 
 enum class DatePickerType { GENERAL, BEFORE_TODAY, AFTER_TODAY }

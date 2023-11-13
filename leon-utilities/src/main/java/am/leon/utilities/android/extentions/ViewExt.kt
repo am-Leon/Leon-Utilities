@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -269,4 +270,14 @@ fun AppCompatImageView.setTint(colorRes: Int) {
     setColorFilter(
         ContextCompat.getColor(context, colorRes), android.graphics.PorterDuff.Mode.SRC_IN
     )
+}
+
+fun Activity.disableTouch() {
+    window.setFlags(
+        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+    )
+}
+
+fun Activity.enableTouch() {
+    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 }

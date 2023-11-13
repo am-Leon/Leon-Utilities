@@ -1,14 +1,18 @@
 package am.leon.utilities.android.extentions
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
 
 
 fun Context.isAppInForeground(): Boolean {
@@ -27,9 +31,24 @@ fun Context.isScreenOn(): Boolean {
     return manager.isInteractive
 }
 
+@SuppressLint("UnspecifiedRegisterReceiverFlag")
+fun Context.registerReceiverExported(receiver: BroadcastReceiver, filter: IntentFilter) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        registerReceiver(receiver, filter, AppCompatActivity.RECEIVER_EXPORTED)
+    else
+        registerReceiver(receiver, filter)
+}
+
+@SuppressLint("UnspecifiedRegisterReceiverFlag")
+fun Context.registerReceiverNotExported(receiver: BroadcastReceiver, filter: IntentFilter) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        registerReceiver(receiver, filter, AppCompatActivity.RECEIVER_NOT_EXPORTED)
+    else
+        registerReceiver(receiver, filter)
+}
+
 // -------------------------------------------- System ---------------------------------------------
 
-@Suppress("DEPRECATION")
 fun Context.getPackageInfo(packageName: String): PackageInfo =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         packageManager.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0))

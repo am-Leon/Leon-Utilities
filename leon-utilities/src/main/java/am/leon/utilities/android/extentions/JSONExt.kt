@@ -19,6 +19,22 @@ fun <M> String.getListOfModelFromJSON(tokenType: Type): ArrayList<M> =
 fun <M> JSONArray.getListOfModelFromJSON(tokenType: Type): ArrayList<M> =
     this.toString().getListOfModelFromJSON(tokenType)
 
+fun JSONArray.jsonArrayToHashMap(): HashMap<String, String> {
+    val hashMap = HashMap<String, String>()
+    for (i in 0 until length()) {
+        val jsonObject = getJSONObject(i)
+        val keys = jsonObject.keys()
+        while (keys.hasNext()) {
+            val key = keys.next()
+            val value = jsonObject.optString(key, "")
+            hashMap[key] = value
+        }
+    }
+    return hashMap
+}
+
+// -------------------------------------------------------------------------------------------------
+
 fun JSONObject.toHashMap(): HashMap<String, String?> {
     val iterator = keys()
     val map = hashMapOf<String, String?>()

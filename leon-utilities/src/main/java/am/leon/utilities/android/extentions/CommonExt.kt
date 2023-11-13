@@ -1,8 +1,12 @@
 package am.leon.utilities.android.extentions
 
 import android.graphics.Color
-import java.text.SimpleDateFormat
-import java.util.*
+import android.location.Location
+import android.text.Editable
+import android.util.Base64
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 fun <T> notNull(argument: T?, name: String): T {
     requireNotNull(argument) { "$name may not be null" }
@@ -18,14 +22,37 @@ fun getColorFromString(color: String?): Int {
     }
 }
 
-fun Long.getRemainingTime(): String {
-    val hours: Int = ((this / 1000) / 3600).toInt()
-    val minutes: Int = (((this / 1000) % 3600) / 60).toInt()
-    val seconds: Int = ((this / 1000) % 60).toInt()
+fun Double.formatDecimalByPattern(
+    pattern: String = "#00.00", locale: Locale = Locale.US
+): String {
+    val decimalFormat = DecimalFormat(pattern, DecimalFormatSymbols(locale))
+    return decimalFormat.format(this)
+}
 
-    return if (hours > 0) {
-        String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds)
-    } else {
-        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+fun ByteArray.base64Encode(): String {
+    return Base64.encodeToString(this, Base64.NO_WRAP)
+}
+
+fun String.base64Decode(): ByteArray {
+    return Base64.decode(this, Base64.NO_WRAP)
+}
+
+fun ByteArray.clear() {
+    fill(0)
+}
+
+fun CharArray.clear() {
+    fill('0')
+}
+
+fun Location.toFormattedValue(): String {
+    return "$latitude/$longitude"
+}
+
+fun Editable.toCharArray(): CharArray {
+    val chars = CharArray(length)
+    for (i in indices) {
+        chars[i] = get(i)
     }
+    return chars
 }

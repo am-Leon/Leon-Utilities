@@ -1,8 +1,8 @@
 package am.leon.utilities.android.helpers.logging.writers
 
 import am.leon.utilities.android.helpers.logging.LogWriter
-import am.leon.utilities.android.utils.file.FileUtil
-import am.leon.utilities.android.utils.file.LogType
+import am.leon.utilities.android.helpers.logging.file.FileUtil
+import am.leon.utilities.android.helpers.logging.file.LogType
 import android.util.Log
 import java.io.File
 

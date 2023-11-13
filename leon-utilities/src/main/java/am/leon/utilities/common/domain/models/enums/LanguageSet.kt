@@ -1,4 +1,4 @@
-package am.leon.utilities.common.domain.models
+package am.leon.utilities.common.domain.models.enums
 
 import am.leon.utilities.R
 import androidx.annotation.StringRes
