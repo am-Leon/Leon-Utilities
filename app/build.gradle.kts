@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version ("1.5.31")
 }
 
 android {
@@ -61,7 +60,7 @@ dependencies {
 
     // Android
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation("androidx.activity:activity-ktx:1.8.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
@@ -73,20 +72,4 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation(project(":leon-utilities"))
-
-    // Ktor dependencies
-    val ktorVersion = "1.6.7"
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-
-    // HTTP engine: The HTTP client used to perform network requests.
-    implementation("io.ktor:ktor-client-android:$ktorVersion")
-
-    // The serialization engine used to convert objects to and from JSON.
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-
-    // Logging
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
-
-    val serializationVersion = "1.3.0"
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 }

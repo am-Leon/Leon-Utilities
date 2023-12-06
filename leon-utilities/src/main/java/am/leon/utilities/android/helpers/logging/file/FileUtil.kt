@@ -6,7 +6,7 @@ import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-object FileUtil {
+internal object FileUtil {
 
     /**
      * Listing out all the required file(s) in a specific directory.
@@ -100,15 +100,18 @@ object FileUtil {
 
         val folder = File(folderPath)
         val folderCreated = folder.mkdirs()
-        if (folder.exists().not() && folderCreated.not()) {
-            Log.d("Folder Dir", "Unable to create the root folder")
+        if (folder.exists().not() && folderCreated.not())
             throw IOException("Unable to create the root folder")
-        } else Log.d("Folder Dir", "Root folder created : ${folder.path}")
+        else
+            Log.d(TAG, "Root folder created : ${folder.path}")
 
         val savedFile = File(folder, "$logFileName.txt")
         if (savedFile.exists().not()) {
             val status = savedFile.createNewFile()
-            Log.d("File created ", savedFile.name + " status: $status")
+            if (status.not())
+                throw IOException("Unable to create file ${savedFile.name}.")
+            else
+                Log.d(TAG, "File ${savedFile.name} creation status: $status")
         }
 
         return savedFile
@@ -144,7 +147,7 @@ object FileUtil {
             Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY
         )
 
-    private const val TAG = "LOGGER"
+    private const val TAG = "FileUtil"
 }
 
 enum class LogType(val logType: String) {

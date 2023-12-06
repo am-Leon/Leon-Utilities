@@ -40,4 +40,6 @@ sealed class LeonException(message: String?) : Exception(message) {
     }
 
     data class Unknown(override val message: String?) : LeonException(message)
+
+    fun isUnauthorized() = this == Client.Unauthorized
 }

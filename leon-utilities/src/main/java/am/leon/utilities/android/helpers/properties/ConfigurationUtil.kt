@@ -2,7 +2,6 @@ package am.leon.utilities.android.helpers.properties
 
 import android.content.Context
 import java.io.IOException
-import java.util.Locale
 import java.util.Properties
 
 class ConfigurationUtil(private val context: Context, private val configFile: IConfigurationFile) {
@@ -13,13 +12,7 @@ class ConfigurationUtil(private val context: Context, private val configFile: IC
         val keyValue = getPropertiesFile().getProperty(key.key, "")
 
         return keyValue.ifEmpty {
-            throw NoSuchElementException(
-                String.format(
-                    Locale.US,
-                    "Trying to get property 'key' \"%s\", but the key is empty or not found.",
-                    key.key
-                )
-            )
+            throw NoSuchElementException("Trying to get property \\'key\\' ${key.key}, but the key is empty or not found.")
         }
     }
 

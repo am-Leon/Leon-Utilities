@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Leon-Utilities</string>
+    <string name="error_unexpected_message">Unexpected error occurred. We are working on it.</string>
+    <string name="error_io_unexpected_message">Oops! Something went wrong while fetching the local data. Please try again</string>
 </resources>

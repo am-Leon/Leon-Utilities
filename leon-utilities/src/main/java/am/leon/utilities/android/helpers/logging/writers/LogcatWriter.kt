@@ -3,33 +3,34 @@ package am.leon.utilities.android.helpers.logging.writers
 import am.leon.utilities.android.helpers.logging.LogWriter
 import android.util.Log
 
-class LogcatWriter(private val appName: String, override val isDebugEnabled: Boolean) : LogWriter {
+class LogcatWriter(private val tagKey: String, override val isDebugEnabled: Boolean) :
+    LogWriter {
 
     override fun debug(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.d(appName, formattedMessage)
+            Log.d(tagKey, formattedMessage)
         }
     }
 
     override fun info(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.i(appName, formattedMessage)
+            Log.i(tagKey, formattedMessage)
         }
     }
 
     override fun warning(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.w(appName, formattedMessage)
+            Log.w(tagKey, formattedMessage)
         }
     }
 
     override fun error(clazz: Class<*>, message: String?, throwable: Throwable?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message, throwable)
-            Log.e(appName, formattedMessage)
+            Log.e(tagKey, formattedMessage)
         }
     }
 
