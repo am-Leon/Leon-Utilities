@@ -24,8 +24,6 @@ interface IRequestValidation {
     fun validateRequestContract() {
         val contract = getRequestContracts()
         val requestMap = remoteMap.requestBody + remoteMap.requestQueries + remoteMap.requestHeaders
-        println("contract are : $contract")
-        println("requestMap are : $requestMap")
         if (isRequestSizeValid(contract, requestMap).not())
             throwWhenMapSizeNotValid()
 

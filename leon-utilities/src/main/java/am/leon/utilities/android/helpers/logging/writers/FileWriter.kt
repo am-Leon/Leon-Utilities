@@ -7,14 +7,14 @@ import android.util.Log
 import java.io.File
 
 class FileWriter(
-    folderName: String, fileName: String, private val appName: String,
+    folderName: String, fileName: String, private val tagKey: String,
     override val isDebugEnabled: Boolean
 ) : LogWriter {
 
     override fun debug(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.d(appName, formattedMessage)
+            Log.d(tagKey, formattedMessage)
             FileUtil.logToFile(LogType.DEBUG, formattedMessage)
         }
     }
@@ -22,7 +22,7 @@ class FileWriter(
     override fun info(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.i(appName, formattedMessage)
+            Log.i(tagKey, formattedMessage)
             FileUtil.logToFile(LogType.INFO, formattedMessage)
         }
     }
@@ -30,7 +30,7 @@ class FileWriter(
     override fun warning(clazz: Class<*>, message: String?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message)
-            Log.w(appName, formattedMessage)
+            Log.w(tagKey, formattedMessage)
             FileUtil.logToFile(LogType.WARNING, formattedMessage)
         }
     }
@@ -38,7 +38,7 @@ class FileWriter(
     override fun error(clazz: Class<*>, message: String?, throwable: Throwable?) {
         if (isDebugEnabled) {
             val formattedMessage = getFormattedMessage(clazz, message, throwable)
-            Log.e(appName, formattedMessage)
+            Log.e(tagKey, formattedMessage)
             FileUtil.logToFile(LogType.ERROR, formattedMessage)
         }
     }
