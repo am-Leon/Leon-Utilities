@@ -72,21 +72,19 @@ dependencies {
     // Google Gson
     implementation("com.google.code.gson:gson:2.10.1")
 
-    implementation(project(":leon-utilities"))
-
     // Ktor dependencies
-    val ktorVersion = "1.6.7"
+    val ktorVersion = "2.3.6"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
 
     // HTTP engine: The HTTP client used to perform network requests.
     implementation("io.ktor:ktor-client-android:$ktorVersion")
 
     // The serialization engine used to convert objects to and from JSON.
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Logging
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-    val serializationVersion = "1.3.0"
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+    implementation(project(":leon-utilities"))
 }
