@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.google.android.gms.maps.model.LatLng
 
 
 fun Context.whatsAppIntent(phoneWithCountryCode: String) {
@@ -84,10 +83,10 @@ fun Context.shareIntent(sharingURL: String) {
     startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_using)))
 }
 
-fun Context.mapIntent(latLng: LatLng) {
+fun Context.mapIntent(latitude: Double, longitude: Double) {
     val intent = Intent(
         Intent.ACTION_VIEW,
-        Uri.parse("google.navigation:q=" + latLng.latitude + "," + latLng.longitude)
+        Uri.parse("google.navigation:q=$latitude,$longitude")
     )
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
     startActivity(intent)

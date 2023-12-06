@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -26,17 +27,30 @@ fun <T : Any?, L : SharedFlow<T>> LifecycleOwner.observe(sharedFlow: L, body: (T
 
 fun <T : Any?, L : LiveData<T?>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) {
     liveData.observe(
-        if (this is Fragment) viewLifecycleOwner else this,
-        Observer {
-            if (lifecycle.currentState == Lifecycle.State.RESUMED) {
-                body(it)
+        if (this is Fragment) viewLifecycleOwner else this
+    ) {
+        if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+            body(it)
+        }
+    }
+}
+
+inline fun <T> LifecycleOwner.repeatOnStarted(
+    crossinline block: suspend CoroutineScope.() -> T
+) {
+    var executed = false // flag to track if the block has been executed
+    lifecycleScope.launch {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            if (!executed) {
+                block()
+                executed = true
             }
         }
-    )
+    }
 }
 
 fun LifecycleOwner.updateViewInUiThread(action: () -> Unit) {
-    lifecycleScope.launchWhenStarted {
+    repeatOnStarted {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             withContext(Dispatchers.Main) {
                 action()
@@ -60,6 +74,7 @@ fun LifecycleOwner.openAppIntentSettingsResultLauncher(
         is ComponentActivity -> {
             this.registerForActivityResult(type, result)
         }
+
         else -> throw IllegalAccessException("must be called from a Fragment or AppCompatActivity")
     }
     return launcher

@@ -18,3 +18,10 @@ object LoggerFactory {
         LoggerFactory.currentLogWriter = currentLogWriter
     }
 }
+
+inline fun <reified T> T.getClassLogger(): Logger {
+    if (T::class.isCompanion) {
+        return LoggerFactory.getLogger(T::class.java.enclosingClass as Class<*>)
+    }
+    return LoggerFactory.getLogger(T::class.java)
+}
