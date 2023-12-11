@@ -1,6 +1,6 @@
 package am.leon.utilities.common.data.mapper
 
-internal abstract class Mapper<Dto, Domain, Entity> {
+abstract class Mapper<Dto, Domain, Entity> {
 
     /**
      * Mapping Dto to Domain
