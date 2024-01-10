@@ -2,18 +2,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-//    id 'maven-publish'
+    id("maven-publish")
 }
-
-//ext {
-//    mGroupId = "am-leom"
-//    mArtifactId = "utilities"
-//    mVersionCode = 13
-//    mVersionName = "v1.1.5"
-//
-//    mLibraryName = "Leon-Utilities"
-//    mLibraryDescription = "$mLibraryName Contains Utilities classses."
-//}
 
 android {
     namespace = "am.leon.utilities"
@@ -45,28 +35,21 @@ android {
         viewBinding = true
     }
 
-//    libraryVariants.configureEach { variant ->
-//        variant.outputs.all { output ->
-//            // Output name
-//            outputFileName = "leon-utilities-${mVersionName}-release.aar"
-//        }
-//    }
-//    publishing {
-//        singleVariant("release") {
-//            withSourcesJar()
-//            withJavadocJar()
-//        }
-//    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
     // Unit Testing
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.5")
+    testImplementation("com.google.truth:truth:1.2.0")
     testImplementation("app.cash.turbine:turbine:1.0.0")
 
     // Instrumented Testing
-    androidTestImplementation("com.google.truth:truth:1.1.5")
+    androidTestImplementation("com.google.truth:truth:1.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("app.cash.turbine:turbine:1.0.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -75,43 +58,59 @@ dependencies {
 
     // Android
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.8.1")
+    implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
 
     // Kotlin
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 
     // Google Gson
     implementation("com.google.code.gson:gson:2.10.1")
 }
 
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            maven(MavenPublication) {
-//                groupId = mGroupId
-//                artifactId = mArtifactId
-//                version = mVersionName
-//
-//                from components.release
-//
-//                pom {
-//                    name = mLibraryName
-//                    description = mLibraryDescription
-//                }
-//            }
-//        }
-//
-//        repositories {
-//            maven {
-//                name = "GitHubPackages"
-//                url = uri("https://maven.pkg.github.com/am-Leon/Leon-Utilities")
-//            }
-//        }
-//    }
-//}
-//
-//// Assembling should be performed before publishing package
-//publish.dependsOn assemble
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "am-leom"
+            artifactId = "leon-utilities"
+            version = "1.1.7"
+            afterEvaluate {
+                from(components["release"])
+            }
+
+            pom {
+                name.set("Leon-Utilities")
+                description.set("Leon-Utilities Contains Utilities classes.")
+                url.set("https://github.com/am-Leon/Leon-Utilities")
+
+                developers {
+                    developer {
+                        id.set("am-Leon")
+                        name.set("Abduelrahman Elemam")
+                        email.set("abduelrahman.elemam@gmail.com")
+                    }
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/am-Leon/Leon-Utilities")
+            credentials {
+                username = project.findProperty("gpr.user") as String?
+                password = project.findProperty("gpr.token") as String?
+            }
+        }
+    }
+}
