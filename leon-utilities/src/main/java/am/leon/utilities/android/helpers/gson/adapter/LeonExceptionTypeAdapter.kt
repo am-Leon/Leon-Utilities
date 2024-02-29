@@ -1,5 +1,6 @@
 package am.leon.utilities.android.helpers.gson.adapter
 
+import am.leon.utilities.android.helpers.gson.parsing.IJsonParsingStrategy
 import am.leon.utilities.common.data.models.exception.LeonException
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
