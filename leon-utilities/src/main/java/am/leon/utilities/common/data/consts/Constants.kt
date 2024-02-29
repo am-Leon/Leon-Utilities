@@ -1,6 +1,6 @@
 package am.leon.utilities.common.data.consts
 
-internal object Constants {
+object Constants {
     // For Remote response
     const val CODE = "code"
     const val ERRORS = "errors"
