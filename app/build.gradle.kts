@@ -34,6 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
 //    applicationVariants.configureEach { variant ->
@@ -51,22 +52,20 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 
     // Instrumented Testing
-    androidTestImplementation("com.google.truth:truth:1.1.5")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("app.cash.turbine:turbine:1.0.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // ---------------------------------------------------------------------------------------------
 
     // Android
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.activity:activity-ktx:1.8.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // Kotlin
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
 
     // Google Gson
     implementation("com.google.code.gson:gson:2.10.1")
